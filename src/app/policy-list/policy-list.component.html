@@ -1,0 +1,19 @@
+<h2>Insurance Policies</h2>
+<table  class="policy-list" style="width:65%" border="1">
+  <tr>
+    <th>Policy Number</th>
+    <th>Amount</th>
+    <th>Description</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let policy of policies" >
+    <td>{{ policy.num }}</td>
+    <td>{{ policy.amount }}</td>
+    <td>{{ policy.description }}</td>
+
+    <td>
+    <button (click)="delete(policy.id)">Delete</button>
+    <!-- <button (click)="updatePolicy(policy)">Update</button>  -->
+    </td>
+  </tr>
+</table>
