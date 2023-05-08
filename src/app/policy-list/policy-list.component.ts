@@ -49,11 +49,3 @@ export class PolicyListComponent
 //}
 
 
-// public updatePolicy(policy: {id: number, amount: number, clientId: number, userId: number, description: string}){
-//     let newPolicy:{id: number, amount: number, clientId: number, userId: number, description: string} 
-//     = {policy.id, 0, 0, 0};
-//     this.policyService.updatePolicy(policyId).subscribe((ret)=>{
-//           console.log("Policy updated: ", ret);
-//     });
-// }  
-}

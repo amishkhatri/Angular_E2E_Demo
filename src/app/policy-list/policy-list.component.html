@@ -1,12 +1,12 @@
 <h2>Insurance Policies</h2>
-<table  class="policy-list" style="width:65%" border="1">
-  <tr>
+<table  class="heroes" style="width:50%" border="1">
+  <tr class="heroes">
     <th>Policy Number</th>
     <th>Amount</th>
     <th>Description</th>
     <th>Actions</th>
   </tr>
-  <tr *ngFor="let policy of policies" >
+  <tr class="heroes" *ngFor="let policy of policies" >
     <td>{{ policy.num }}</td>
     <td>{{ policy.amount }}</td>
     <td>{{ policy.description }}</td>
@@ -17,3 +17,4 @@
     </td>
   </tr>
 </table>
+
