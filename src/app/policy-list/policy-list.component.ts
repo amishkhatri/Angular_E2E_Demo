@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PolicyService } from '../policy.service';
-
+import { policydataitem } from '../model/policydataitem';
 
 @Component({
   selector: 'app-policy-list',
@@ -10,55 +10,40 @@ import { PolicyService } from '../policy.service';
 
 export class PolicyListComponent 
 {
+  policyArray!: policydataitem[];
+
   policies: any[] = [];
   constructor(private policyService: PolicyService) { }
 
-// getPoliciesFromService(): void{
-//   this.policyService.getPolicies().subscribe(policies => this.policies = policies);
-
-// }
 
   ngOnInit()
    {
-//    this.getPoliciesFromService();
-
     this.policyService.getPolicies().subscribe
     (
         (data: any): void =>
         {
         console.log(data);
         this.policies = data;
+        this.policyArray = data;
         }
     )
 
   }
 
-  delete(policyId: any): void {
-    
-    console.log("Policy deleted:");
 
-    this.policies = this.policies.filter(p => p !== this.policies);
-    //this.policyService.deletePolicyById(policyId).subscribe();
-
-    console.log("total length now " +  this.policies.length);
-
-    this.policyService.deletePolicyById(policyId);
-
-    console.log("Policy Removed:");
+deleteButton(policy : policydataitem): void 
+{
   
-    //this.ngOnInit();
-
+  const p1 = this.policyArray?.filter(p => p == policy);
+  if (p1)
+  {
+    this.policyService.deletePolicy1(policy).subscribe();
   }
 
-//   public delete(policyId: any){
-//     this.policyService.deletePolicyById(policyId).subscribe
-//     (
-      
-//       (ret: any )=>
-//       {
-//           console.log("Policy deleted: ", ret);
-//       }
-//     )
-// }
+  console.log('delete');
+}
+
+ 
+ 
 
 }
