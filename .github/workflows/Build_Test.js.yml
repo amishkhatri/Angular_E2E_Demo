@@ -1,9 +1,10 @@
-name: Build and Test
+name: Angular CICD Build and Test Pipe
 
 on:
   push:
     branches:
       - main
+  
   pull_request:
     branches:
       - main
@@ -28,4 +29,4 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm run test
+        run: npm run test 
