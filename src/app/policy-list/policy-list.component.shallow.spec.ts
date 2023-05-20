@@ -2,7 +2,6 @@
   SHALLOW COMPONENT UNIT TEST SCENARIOS
 */
 
-
 import { ComponentFixture } from '@angular/core/testing';
 import { PolicyListComponent } from './policy-list.component';
 import {HttpClientTestingModule,HttpTestingController} from "@angular/common/http/testing"

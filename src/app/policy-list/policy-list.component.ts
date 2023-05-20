@@ -34,13 +34,14 @@ export class PolicyListComponent
 deleteButton(policy : policydataitem): void 
 {
   
-  const p1 = this.policyArray?.filter(p => p == policy);
-  if (p1)
+  const p1 = this.policyArray?.filter(p => p !== policy);
+  if (!p1)
   {
+    console.log('inside');
     this.policyService.deletePolicy1(policy).subscribe();
   }
 
-  console.log('delete');
+  
 }
 
  
