@@ -1,17 +1,17 @@
 <h2>Insurance Policies</h2>
-<table  class="heroes" style="width:50%" border="1">
-  <tr class="heroes">
+<table   style="width:50%" border="1">
+  <tr >
     <th>Policy Number</th>
     <th>Amount</th>
     <th>Description</th>
     <th>Actions</th>
   </tr>
-  <tr class="heroes" *ngFor="let policy of policies" >
-    <td>{{ policy.num }}</td>
+  <tr *ngFor="let policy of policyArray" >
+    <td align="middle" >{{ policy.num }}</td>
     <td>{{ policy.amount }}</td>
     <td>{{ policy.description }}</td>
 
-    <td>
+    <td >
     <button (click)="deleteButton(policy)">Delete</button>
     <!-- <button (click)="updatePolicy(policy)">Update</button>  -->
     </td>

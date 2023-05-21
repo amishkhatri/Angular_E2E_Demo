@@ -29,7 +29,7 @@ getPolicies (): Observable<policydataitem[]> {
 
   /** GET Policy by id. Will 404 if id not found */
   getPolicyById(id: number): Observable<policydataitem> {
-    const url = `${this.SERVER_URL}/${id}`;
+    const url = `${this.SERVER_URL}+${id}`;
     return this.httpClient.get<policydataitem>(url).pipe(
       tap(_ => this.log(`fetched policy id=${id}`)),
       catchError(this.handleError<policydataitem>(`getPolicyById Policyid=${id}`))
@@ -48,7 +48,9 @@ getPolicies (): Observable<policydataitem[]> {
   //   // /** DELETE: delete the policy from the server */
   deletePolicy1(policy: policydataitem | number): Observable<policydataitem> {
     const id = typeof policy === 'number' ? policy : policy.id;
-    const url = `${this.SERVER_URL}/${id}`;
+    //TO DO - update the below url which is 'http://localhost:8080/api/ + 1' - wrong
+    //const url = `${this.SERVER_URL}` + `${id}`;
+     const url = `${this.SERVER_URL + 'policies'}/${id}`;    
 
     return this.httpClient.delete<policydataitem>(url,httpOptions).pipe(
       tap(_ => this.log(`deleted policy id=${id}`)),

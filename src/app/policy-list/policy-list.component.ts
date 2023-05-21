@@ -15,34 +15,48 @@ export class PolicyListComponent
   policies: any[] = [];
   constructor(private policyService: PolicyService) { }
 
+    ngOnInit()
+      {
+      this.getPolicyData()
+    }
 
-  ngOnInit()
-   {
-    this.policyService.getPolicies().subscribe
-    (
-        (data: any): void =>
-        {
-        console.log(data);
-        this.policies = data;
-        this.policyArray = data;
-        }
-    )
+    getPolicyData (): void
+    {
 
-  }
+      this.policyService.getPolicies().subscribe
+      (
+          (data: any): void =>
+          {
+          console.log(data);
+          this.policies = data;
+          this.policyArray = data;
+          }
+      )
+
+    }
+      
+    deleteButton(policy : policydataitem): void 
+    {      
+      const policyFiltered = this.policyArray?.filter(p => p !== policy);
+      
+      if (!policyFiltered)
+      {    
+        
+        this.policyService.deletePolicy1(policy).subscribe();
+        console.log('inside - False ');
+      }
+
+      if (policyFiltered)
+      {
+      
+        this.policyService.deletePolicy1(policy).subscribe();
+        console.log('inside  - True ');
+      }
+
+      this.policyArray = policyFiltered;
 
 
-deleteButton(policy : policydataitem): void 
-{
-  
-  const p1 = this.policyArray?.filter(p => p !== policy);
-  if (!p1)
-  {
-    console.log('inside');
-    this.policyService.deletePolicy1(policy).subscribe();
-  }
-
-  
-}
+    }
 
  
  

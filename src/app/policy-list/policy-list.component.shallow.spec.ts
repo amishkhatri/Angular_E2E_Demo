@@ -14,10 +14,10 @@ import { policydataitem } from '../model/policydataitem';
 describe('PolicyListComponent', () => {
 
   let  POLICIES =  [
-    {  id:  1,  num:  'PO1', amount: 512.99, userId: 14521, clientId: 45, description: 'Life Insurance - Term Plan' },
-    {  id:  2,  num:  'PO2', amount: 718.87, userId: 14588, clientId: 87, description: 'Personal Care - Accedential Death' },
-    {  id:  3,  num:  'PO3', amount: 129.65, userId: 10213, clientId: 98, description: 'Home Loan - Secure' },
-    {  id:  4,  num:  'PO4', amount: 302.19, userId: 11968, clientId: 33, description: 'Travel - Insurance ' }
+    {  id:  111,  num:  'PO1', amount: 512.99, userId: 14521, clientId: 45, description: 'Life Insurance - Term Plan' },
+    {  id:  112,  num:  'PO2', amount: 718.87, userId: 14588, clientId: 87, description: 'Personal Care - Accedential Death' },
+    {  id:  113,  num:  'PO3', amount: 129.65, userId: 10213, clientId: 98, description: 'Home Loan - Secure' },
+    {  id:  114,  num:  'PO4', amount: 302.19, userId: 11968, clientId: 33, description: 'Travel - Insurance ' }
    ];
   
   let component: PolicyListComponent;
@@ -42,7 +42,7 @@ it('should remove the indicated policy from the policy list', () => {
       
   //Create a data to delete
   const data: policydataitem = {
-    id: 3, // Change the value to a string instead of a number
+    id: 113, // Change the value to a string instead of a number
     num: "PO3",
     amount: 129.65,
     userId: 10213,
@@ -70,7 +70,7 @@ it ('should call delete button', () => {
 
   //Create a data to delete
   const data: policydataitem = {
-    id: 3, // Change the value to a string instead of a number
+    id: 113, // Change the value to a string instead of a number
     num: "PO3",
     amount: 129.65,
     userId: 10213,

@@ -18,6 +18,5 @@ RUN npm run build
 
 # Expose the port your Angular app will run on (default is 4200)
 EXPOSE 4200
-
 # Start the Angular app
 CMD ["npm", "start"]
