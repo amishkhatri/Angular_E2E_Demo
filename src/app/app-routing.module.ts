@@ -6,10 +6,8 @@ import { PolicyListComponent }  from './policy-list/policy-list.component';
 import { PolicyDetailComponent } from './policy-detail/policy-detail.component';
 
 const routes: Routes = [
-  { 
-    path: 'policies', component: PolicyListComponent
-    
-}
+  { path: 'policies', component: PolicyListComponent },
+  { path: 'policy-detail', component: PolicyDetailComponent }
 ];
 
 
