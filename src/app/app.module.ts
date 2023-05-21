@@ -7,11 +7,13 @@ import { DataService } from './data.service';
 import { PolicyListComponent } from './policy-list/policy-list.component';
 import { PolicyService } from './policy.service';
 import { HttpClientModule }    from '@angular/common/http';
+import { PolicyDetailComponent } from './policy-detail/policy-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PolicyListComponent
+    PolicyListComponent,
+    PolicyDetailComponent
   ],
   imports: [
     BrowserModule,
