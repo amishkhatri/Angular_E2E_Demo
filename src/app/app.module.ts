@@ -8,12 +8,14 @@ import { PolicyListComponent } from './policy-list/policy-list.component';
 import { PolicyService } from './policy.service';
 import { HttpClientModule }    from '@angular/common/http';
 import { PolicyDetailComponent } from './policy-detail/policy-detail.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PolicyListComponent,
-    PolicyDetailComponent
+    PolicyDetailComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,
