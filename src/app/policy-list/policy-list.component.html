@@ -8,13 +8,14 @@
   <title>Hello, world!</title>
 </head>
 
-<div style="width: 100%;text-align: center">
+<!-- <div style="width: 100%;text-align: center">
   <h3>Policies</h3>
-</div>
+</div> -->
 
 <div>
-
+&nbsp;
 </div>
+
 <table style="width: 50%;align:middle" class="table table-sm" border="1">
   <tr style="text-align:middle">
     <th scope="col">Policy Number</th>
@@ -29,9 +30,10 @@
 
     <td scope="row">
     <button (click)="deleteButton(policy)" class="btn btn-outline-warning">Delete</button>
-    
-    <button (click)="deleteButton(policy)" class="btn btn-outline-success">Details</button>
-    
+      &nbsp;
+    <!-- <button (click)='viewButton(policy)' class="btn btn-outline-success">Details</button>-->
+    <a routerLink="/policy-detail" class="btn btn-outline-success">Policy</a> 
+
     <!-- <button (click)="updatePolicy(policy)">Update</button>  -->
     </td>
   </tr>

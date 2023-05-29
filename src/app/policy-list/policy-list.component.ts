@@ -12,6 +12,7 @@ export class PolicyListComponent
 {
   policyArray!: policydataitem[];
 
+
   policies: any[] = [];
   constructor(private policyService: PolicyService) { }
 
@@ -34,7 +35,21 @@ export class PolicyListComponent
       )
 
     }
+
+    viewButton(policy : policydataitem):void
+    {
+      console.log(policy.id);
+    }
       
+    // navigateToPolicyDetail( policy : policydataitem ) :void
+    // {
+
+    //   const policyIdString = policy?.id.toString();
+
+    //   this.router.navigate(['/policy-detail', policyIdString]);
+
+    // }
+    
     deleteButton(policy : policydataitem): void 
     {      
       const policyFiltered = this.policyArray?.filter(p => p !== policy);
@@ -59,6 +74,4 @@ export class PolicyListComponent
     }
 
  
- 
-
 }
