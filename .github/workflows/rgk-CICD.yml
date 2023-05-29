@@ -38,4 +38,4 @@ jobs:
     - name: Run tests
       run: |
         npm run build --prod
-        xvfb-run -a ng test --configuration=ci
+        xvfb-run -a ng test --configuration=development
