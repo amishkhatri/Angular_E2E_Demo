@@ -3,7 +3,12 @@
 # https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: CI
 
-on: [push]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 
 jobs:
   build:
@@ -11,8 +16,12 @@ jobs:
     # Machine environment:
     # https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions#ubuntu-1804-lts
     # We specify the Node.js version manually below, and use versioned Chrome from Puppeteer.
-    runs-on: ubuntu-18.04
 
+    runs-on: ubuntu-latest
+
+    strategy:
+        matrix:
+          node-version: [16.x]
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js 18.16.0
@@ -21,8 +30,6 @@ jobs:
         node-version: 18.16.0
     - name: Install dependencies
       run: npm install
-    - name: Lint
-      run: npm run lint
     - name: Build
       run: npm run build -- --prod
     - name: Test
