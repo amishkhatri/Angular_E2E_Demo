@@ -41,4 +41,5 @@ jobs:
       run: |
         npm run build --prod
         xvfb-run -a ng test --configuration=development
+         timeout-minutes: 5
   
