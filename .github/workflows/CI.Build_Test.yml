@@ -41,7 +41,7 @@ jobs:
       run: |
         npm run build --prod
         # xvfb-run -a ng test --configuration=development
-        xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --watch=false --progress=true
+        xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
         # timeout-minutes: 4
         
     - name: Check code coverage
