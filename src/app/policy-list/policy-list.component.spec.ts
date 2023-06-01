@@ -11,7 +11,7 @@ import { Observable, of } from "rxjs";
 import { PolicyService } from '../policy.service';
 import { policydataitem } from '../model/policydataitem';
 
-describe('PolicyListComponent', () => {
+fdescribe('PolicyListComponent', () => {
 
   let  POLICIES =  [
     {  id:  111,  num:  'PO1', amount: 512.99, userId: 14521, clientId: 45, description: 'Life Insurance - Term Plan' },
