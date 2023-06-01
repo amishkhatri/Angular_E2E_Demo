@@ -47,10 +47,9 @@ jobs:
     - name: Check code coverage
       run: |
         COVERAGE_THRESHOLD=20
-        # coverage=$(grep -oP "(?<=statements.\s)(\d+.\d+)" ./coverage/angular-inmemory-api/index.html)
-        coverage=$(grep -oP "(?<=Statements.\s)(\d+.\d+)" ./coverage/angular-inmemory-api/index.html)
-         echo "Actual coverage is : $coverage%"
-        if (( $(echo "$coverage < $COVERAGE_THRESHOLD" | bc -l) )); then
+        coverage=$(grep -oP "(?<=Statements.\s)(\d+\.\d+)" ./coverage/angular-inmemory-api/index.html)
+        echo "Actual coverage is: $coverage%"
+        if (( $(awk "BEGIN {print ($coverage < $COVERAGE_THRESHOLD)}") )); then
           echo "Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
           # Add your custom logic here to send a message or take any other action
           # For example, you can use a messaging service or create a GitHub issue
