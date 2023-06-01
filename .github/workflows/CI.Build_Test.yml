@@ -66,3 +66,11 @@ jobs:
           echo "Branch Coverage:$branch_coverage"
           echo "Function Coverage:$function_coverage"
           echo "Line Coverage:$line_coverage"
+
+        if (( $(echo "$statement_coverage < $COVERAGE_THRESHOLD" | bc -l) )); then
+          echo "Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo "Code coverage is acceptable: $statement_coverage%"
+        fi
+        
