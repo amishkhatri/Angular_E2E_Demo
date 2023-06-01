@@ -47,14 +47,35 @@ jobs:
     - name: Check code coverage
       run: |
         COVERAGE_THRESHOLD=20
-        coverage=$(sed -n 's/.* Statements \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
-        echo "Actual coverage is: $coverage%"
+        # coverage=$(sed -n 's/.* Statements \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        # echo "Actual coverage is: $coverage%"
         
         #coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)%  Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
-        coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements*/\1/p' ./coverage/angular-inmemory-api/index.html)
-        coverage2=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
-        coverage3=$(sed 'p' ./coverage/angular-inmemory-api/index.html)
+        # coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        # coverage2=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        # coverage3=$(sed 'p' ./coverage/angular-inmemory-api/index.html)
        
         # echo "Actual coverage1 is: $coverage1%"
-        echo "Actual coverage3 is: $coverage3%"
+        # echo "Actual coverage3 is: $coverage3%"
         
+      
+ 
+    - name: Extract Coverage
+        run:|
+          coverage_file="./coverage/angular-inmemory-api/index.html"
+
+          statement_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% )" "$coverage_file")
+        
+          branch_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 1)
+                    
+          function_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 2 | head -n 1)
+          
+          line_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 3 | head -n 1)
+
+            echo "Statement Coverage:$statement_coverage"
+          
+            echo "Branch Coverage:$branch_coverage"
+          
+            echo "Function Coverage:$function_coverage"
+          
+            echo "Line Coverage:$line_coverage"
