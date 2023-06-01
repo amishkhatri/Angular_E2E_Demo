@@ -47,7 +47,5 @@ jobs:
     - name: Check code coverage
       run: |
         COVERAGE_THRESHOLD=20
-        coverage=$(grep -oP "(?<=Statements\s)\d+(?:\.\d+)?" ./coverage/angular-inmemory-api/index.html)
+        coverage=$(sed -n 's/.*Statements \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
         echo "Actual coverage is: $coverage%"
-        
-
