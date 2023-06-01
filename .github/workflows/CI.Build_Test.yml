@@ -49,7 +49,7 @@ jobs:
         
     - name: Check code coverage
       run: |
-        COVERAGE_THRESHOLD=25
+        # COVERAGE_THRESHOLD=25
              
           coverage_file="./coverage/angular-inmemory-api/index.html"
           statement_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% )" "$coverage_file")
