@@ -106,14 +106,13 @@ jobs:
           const octokit = github.getOctokit('${{ secrets.GITHUB_TOKEN }}');
 
           octokit.checks.create({
-          owner: '${{ github.repository_owner }}',
-          repo: '${{ github.repository }}',
-          name: 'Code Coverage',
-          head_sha: '${{ github.sha }}',
-          status: 'completed',
-          conclusion: 'neutral',
-          output: {
-            title: 'Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%',
-            summary: 'The code coverage is below the acceptable threshold of ${{ env.CODE_COVERAGE_THRESHOLD }}%. Please improve the code coverage.',
-        }
-      });
+            owner: '${{ github.repository_owner }}',
+            repo: '${{ github.repository }}',
+            name: 'Code Coverage',
+            head_sha: '${{ github.sha }}',
+            status: 'completed',
+            conclusion: 'neutral',
+            output: {
+              title: 'Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%',
+              summary: 'The code coverage is below the acceptable threshold of ${{ env.CODE_COVERAGE_THRESHOLD }}%. Please improve the code coverage.',
+            }});
