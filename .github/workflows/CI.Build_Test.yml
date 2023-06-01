@@ -40,6 +40,7 @@ jobs:
     - name: Run tests
       run: |
         npm run build --prod
-        xvfb-run -a ng test --configuration=development
-         timeout-minutes: 5
+        # xvfb-run -a ng test --configuration=development
+        xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --watch=false --progress=true --verbose
+         timeout-minutes: 4
   
