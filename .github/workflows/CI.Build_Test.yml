@@ -57,5 +57,12 @@ jobs:
        
         # echo "Actual coverage1 is: $coverage1%"
         # echo "Actual coverage3 is: $coverage3%"
-     
- 
+          coverage_file="./coverage/angular-inmemory-api/index.html"
+          statement_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% )" "$coverage_file")
+          branch_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 1)
+          function_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 2 | head -n 1)
+          line_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 3 | head -n 1)
+          echo "Statement Coverage:$statement_coverage"
+          echo "Branch Coverage:$branch_coverage"
+          echo "Function Coverage:$function_coverage"
+          echo "Line Coverage:$line_coverage"
