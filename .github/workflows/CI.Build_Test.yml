@@ -46,7 +46,7 @@ jobs:
         
     - name: Check code coverage
       run: |
-        COVERAGE_THRESHOLD=19
+        COVERAGE_THRESHOLD=25
         # coverage=$(sed -n 's/.* Statements \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
         # echo "Actual coverage is: $coverage%"
         
@@ -62,10 +62,10 @@ jobs:
           branch_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 1)
           function_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 2 | head -n 1)
           line_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 3 | head -n 1)
-          echo "Statement Coverage:$statement_coverage"
-          echo "Branch Coverage:$branch_coverage"
-          echo "Function Coverage:$function_coverage"
-          echo "Line Coverage:$line_coverage"
+          # echo "Statement Coverage:$statement_coverage"
+          # echo "Branch Coverage:$branch_coverage"
+          # echo "Function Coverage:$function_coverage"
+          # echo "Line Coverage:$line_coverage"
 
         if [ "$(echo "$statement_coverage < $COVERAGE_THRESHOLD" | bc)" -eq 1 ]; then
           echo "Statement Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
