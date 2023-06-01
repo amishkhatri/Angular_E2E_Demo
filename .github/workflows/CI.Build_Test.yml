@@ -50,3 +50,6 @@ jobs:
         coverage=$(sed -n 's/^.*Statements: \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
         echo "Actual coverage is: $coverage%"
      
+        COVERAGE_THRESHOLD=20
+        coverage=$(awk -F'[<>]' '/Statements/ {print $3}' ./coverage/angular-inmemory-api/index.html)
+        echo "Actual coverage is: $coverage%"
