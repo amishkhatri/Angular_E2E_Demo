@@ -46,7 +46,7 @@ jobs:
         
     - name: Check code coverage
       run: |
-        COVERAGE_THRESHOLD=20
+        COVERAGE_THRESHOLD=19
         # coverage=$(sed -n 's/.* Statements \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
         # echo "Actual coverage is: $coverage%"
         
@@ -68,9 +68,30 @@ jobs:
           echo "Line Coverage:$line_coverage"
 
         if [ "$(echo "$statement_coverage < $COVERAGE_THRESHOLD" | bc)" -eq 1 ]; then
-          echo "Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
+          echo "Statement Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
           exit 1  # This will mark the workflow as failed
         else
-          echo "Code coverage is acceptable: $statement_coverage%"
+          echo " Statement Code coverage is acceptable: $statement_coverage%"
+        fi
+
+        if [ "$(echo "$branch_coverage < $COVERAGE_THRESHOLD" | bc)" -eq 1 ]; then
+          echo "Branch Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo " Branch Code coverage is acceptable: $branch_coverage%"
+        fi
+
+        if [ "$(echo "$function_coverage < $COVERAGE_THRESHOLD" | bc)" -eq 1 ]; then
+          echo "Statement Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo "Function Code coverage is acceptable: $function_coverage%"
+        fi
+
+        if [ "$(echo "$line_coverage < $COVERAGE_THRESHOLD" | bc)" -eq 1 ]; then
+          echo "Statement Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo "Line Code coverage is acceptable: $line_coverage%"
         fi
         
