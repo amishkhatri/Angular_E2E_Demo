@@ -62,28 +62,28 @@ jobs:
           # echo "Line Coverage:$line_coverage"
 
         if [ "$(echo "$statement_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-          echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
+          echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !! ..."
           exit 1  # This will mark the workflow as failed
         else
           echo "Statement Code coverage is acceptable: $statement_coverage%"
         fi
 
         if [ "$(echo "$branch_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-          echo "Branch Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
+          echo "Branch Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !!..."
           exit 1  # This will mark the workflow as failed
         else
           echo "Branch Code coverage is acceptable: $branch_coverage%"
         fi
 
         if [ "$(echo "$function_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-          echo "Function Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
+          echo "Function Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
           exit 1  # This will mark the workflow as failed
         else
           echo "Function Code coverage is acceptable: $function_coverage%"
         fi
 
         if [ "$(echo "$line_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-          echo "Line Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
+          echo "Line Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
           exit 1  # This will mark the workflow as failed
         else
           echo "Line Code coverage is acceptable: $line_coverage%"
