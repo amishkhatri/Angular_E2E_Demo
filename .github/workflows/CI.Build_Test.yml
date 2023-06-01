@@ -100,7 +100,7 @@ jobs:
     - name: Set build status
       if: steps.code_coverage.outputs.coverage_passed == 'false'
       uses: actions/github-script@v4
-        with:
+      with:
         script: |
           const github = require('@actions/github');
           const octokit = github.getOctokit('${{ secrets.GITHUB_TOKEN }}');
