@@ -48,6 +48,7 @@ jobs:
         # timeout-minutes: 4
         
     - name: Check code coverage
+      id: code_coverage
       run: |
         # COVERAGE_THRESHOLD=25
              
@@ -65,27 +66,54 @@ jobs:
           echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !! ..."
           exit 1  # This will mark the workflow as failed
         else
+          echo "::set-output name=coverage_passed::true"
           echo "Statement Code coverage is acceptable: $statement_coverage%"
         fi
 
         if [ "$(echo "$branch_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
           echo "Branch Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !!..."
+          echo "::set-output name=coverage_passed::false"
           exit 1  # This will mark the workflow as failed
         else
+          echo "::set-output name=coverage_passed::true"
           echo "Branch Code coverage is acceptable: $branch_coverage%"
         fi
 
         if [ "$(echo "$function_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
           echo "Function Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
+          echo "::set-output name=coverage_passed::false"
           exit 1  # This will mark the workflow as failed
         else
+          echo "::set-output name=coverage_passed::true"
           echo "Function Code coverage is acceptable: $function_coverage%"
         fi
 
         if [ "$(echo "$line_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
           echo "Line Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
+          echo "::set-output name=coverage_passed::false"
           exit 1  # This will mark the workflow as failed
         else
+          echo "::set-output name=coverage_passed::true"
           echo "Line Code coverage is acceptable: $line_coverage%"
         fi
         
+    - name: Set build status
+      if: steps.code_coverage.outputs.coverage_passed == 'false'
+      uses: actions/github-script@v4
+        with:
+        script: |
+          const github = require('@actions/github');
+          const octokit = github.getOctokit('${{ secrets.GITHUB_TOKEN }}');
+
+          octokit.checks.create({
+          owner: '${{ github.repository_owner }}',
+          repo: '${{ github.repository }}',
+          name: 'Code Coverage',
+          head_sha: '${{ github.sha }}',
+          status: 'completed',
+          conclusion: 'neutral',
+          output: {
+            title: 'Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%',
+            summary: 'The code coverage is below the acceptable threshold of ${{ env.CODE_COVERAGE_THRESHOLD }}%. Please improve the code coverage.',
+        }
+      });
