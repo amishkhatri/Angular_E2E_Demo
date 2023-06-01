@@ -71,7 +71,7 @@ jobs:
           # echo "Line Coverage:$line_coverage"
 
         if [ "$(echo "$statement_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-          echo "Statement Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
+          echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
           exit 1  # This will mark the workflow as failed
         else
           echo " Statement Code coverage is acceptable: $statement_coverage%"
