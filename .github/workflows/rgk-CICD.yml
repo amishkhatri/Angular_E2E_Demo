@@ -25,8 +25,8 @@ jobs:
 
     - name: Install Angular CLI and dependencies
       run: |
-        npm install -g @angular/cli
-        npm install --save-dev @angular-devkit/build-angular
+        npm install -g @angular/cli --force
+        npm install --save-dev @angular-devkit/build-angular --force
 
     - name: Install dependencies
       run: npm ci
