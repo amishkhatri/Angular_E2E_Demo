@@ -50,6 +50,10 @@ jobs:
         coverage=$(sed -n 's/.* Statements \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
         echo "Actual coverage is: $coverage%"
         
-        coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)%  Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        #coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)%  Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        coverage2=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+       
         echo "Actual coverage1 is: $coverage1%"
+        echo "Actual coverage2 is: $coverage2%"
         
