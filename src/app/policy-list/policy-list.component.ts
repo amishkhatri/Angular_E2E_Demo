@@ -12,7 +12,6 @@ export class PolicyListComponent
 {
   policyArray!: policydataitem[];
 
-
   policies: any[] = [];
   constructor(private policyService: PolicyService) { }
 
