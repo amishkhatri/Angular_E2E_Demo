@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v1
       
     - name: Set variable
-      run: echo "CODE_COVERAGE_OPTIN_FLAG=${{ secrets.CODE_COVERAGE_OPTIN_FLAG }}" >> $GITHUB_ENV
+      run: echo "CODE_COVERAGE_OPTIN_FLAG=TRUE" >> $GITHUB_ENV
       
     - name: Use variable
       run: echo $CODE_COVERAGE_OPTIN_FLAG
