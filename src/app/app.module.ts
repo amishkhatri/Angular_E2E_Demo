@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientInMemoryWebApiModule, InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DataService } from './data.service';
+import { MockDataService } from './mock-data.service';
 import { PolicyListComponent } from './policy-list/policy-list.component';
 import { PolicyService } from './policy.service';
 import { HttpClientModule }    from '@angular/common/http';
@@ -21,7 +21,7 @@ import { NavigationComponent } from './navigation/navigation.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(DataService)
+    InMemoryWebApiModule.forRoot(MockDataService)
   ],
   providers: [PolicyService],
   bootstrap: [AppComponent]

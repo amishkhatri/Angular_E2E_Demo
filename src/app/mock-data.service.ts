@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {InMemoryDbService} from 'angular-in-memory-web-api'
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataService implements InMemoryDbService{
+export class MockDataService implements InMemoryDbService{
 
   constructor() { }
   
@@ -18,7 +19,6 @@ export class DataService implements InMemoryDbService{
      ];
    
    return {policies};
-
 
   }
 }
