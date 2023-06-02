@@ -24,6 +24,10 @@ jobs:
       
     - name: Use variable
       run:  echo "LOCAL_CODE_COVERAGE_OPTIN_FLAG:$LOCAL_CODE_COVERAGE_OPTIN_FLAG"
+      
+    - name: Conditional step
+      run: echo "Executing this step because LOCAL_CODE_COVERAGE_OPTIN_FLAG is FALSE"
+      if: ${{ env.LOCAL_CODE_COVERAGE_OPTIN_FLAG == 'FALSE' }}
         
     - name: Use Node.js 18.16.0
       uses: actions/setup-node@v2
@@ -54,6 +58,8 @@ jobs:
     - name: Check code coverage
       id: code_coverage
       run: |
+      
+        
           coverage_file="./coverage/angular-inmemory-api/index.html"
           statement_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% )" "$coverage_file")
           branch_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 1)
