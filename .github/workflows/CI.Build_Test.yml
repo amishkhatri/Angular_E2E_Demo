@@ -8,8 +8,7 @@ on:
 
 env:
      CODE_COVERAGE_THRESHOLD: 20
-     env_var_1: ${{ vars.CODE_COVERAGE_OPTIN_FLAG }}
-     env_var_2: ${{ vars.CODECOVERAGEOPTIN }}
+     LOCAL_CODE_COVERAGE_OPTIN_FLAG: ${{ vars.CODE_COVERAGE_OPTIN_FLAG }}
 
 jobs:
   build:
@@ -23,16 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       
-    - name: Set variable
-      run: echo "CODE_COVERAGE_OPTIN_FLAG=TRUE" >> $GITHUB_ENV
-            $CODECOVERAGEOPTIN >> $GITHUB_ENV
-      
     - name: Use variable
-      run: echo $CODE_COVERAGE_OPTIN_FLAG
-          echo "CODECOVERAGEOPTIN:$CODECOVERAGEOPTIN"
-          echo "env_var_1 => $env_var_1"
-          echo "env_var_2 => $env_var_2"
-
+      run:  echo "LOCAL_CODE_COVERAGE_OPTIN_FLAG:$LOCAL_CODE_COVERAGE_OPTIN_FLAG"
+        
     - name: Use Node.js 18.16.0
       uses: actions/setup-node@v2
       with:
