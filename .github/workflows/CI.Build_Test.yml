@@ -55,11 +55,9 @@ jobs:
         xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
         # timeout-minutes: 4
         
-    - name: Check code coverage
+    - name: Conditional - code coverage check
       id: code_coverage
       run: |
-      
-        
           coverage_file="./coverage/angular-inmemory-api/index.html"
           statement_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% )" "$coverage_file")
           branch_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 1)
@@ -105,5 +103,5 @@ jobs:
 
             echo "Line Code coverage is acceptable: $line_coverage%"
           fi
-        
-  
+      if: ${{ env.LOCAL_CODE_COVERAGE_OPTIN_FLAG == 'TRUE' }}
+      
