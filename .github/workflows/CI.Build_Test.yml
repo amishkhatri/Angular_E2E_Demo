@@ -78,7 +78,6 @@ jobs:
          
             exit 1  # This will mark the workflow as failed
           else
-        
             echo "Branch Code coverage is acceptable: $branch_coverage%"
           fi
 
