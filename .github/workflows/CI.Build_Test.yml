@@ -8,6 +8,8 @@ on:
 
 env:
      CODE_COVERAGE_THRESHOLD: 20
+     env_var_1: ${{ vars.CODE_COVERAGE_OPTIN_FLAG }}
+     env_var_2: ${{ vars.CODECOVERAGEOPTIN }}
 
 jobs:
   build:
@@ -28,6 +30,8 @@ jobs:
     - name: Use variable
       run: echo $CODE_COVERAGE_OPTIN_FLAG
           echo "CODECOVERAGEOPTIN:$CODECOVERAGEOPTIN"
+          echo "env_var_1 => $env_var_1"
+          echo "env_var_2 => $env_var_2"
 
     - name: Use Node.js 18.16.0
       uses: actions/setup-node@v2
