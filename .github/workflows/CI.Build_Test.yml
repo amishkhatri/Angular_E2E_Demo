@@ -8,7 +8,7 @@ on:
 
 env:
      CODE_COVERAGE_THRESHOLD: 20
-
+    
 jobs:
   build:
 
@@ -20,6 +20,12 @@ jobs:
         
     steps:
     - uses: actions/checkout@v1
+  
+    - name: Set variable
+      run: echo "CODE_COVERAGE_OPTIN_FLAG=${{ secrets.CODE_COVERAGE_OPTIN_FLAG }}" >> $GITHUB_ENV
+    
+    - name: Use variable
+      run: echo $CODE_COVERAGE_OPTIN_FLAG
 
     - name: Use Node.js 18.16.0
       uses: actions/setup-node@v2
