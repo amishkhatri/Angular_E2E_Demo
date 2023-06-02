@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+     CODE_COVERAGE_THRESHOLD: 20
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js 18.16.0
+      uses: actions/setup-node@v2
+      with:
+        node-version: 18.16.0
+
+    - name: Install Angular CLI and dependencies
+      run: |
+        npm install -g @angular/cli --force
+        npm install --save-dev @angular-devkit/build-angular --force
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Set up Xvfb
+      run: |
+        export DISPLAY=:99
+        sudo apt-get install -y xvfb
+        Xvfb -screen 0 1024x768x24 :99 &
+
+    - name: Run tests
+      run: |
+        npm run build --prod
+        # xvfb-run -a ng test --configuration=development
+        xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
+        # timeout-minutes: 4
+        
+    - name: Check code coverage
+      id: code_coverage
+      run: |
+          coverage_file="./coverage/angular-inmemory-api/index.html"
+          statement_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% )" "$coverage_file")
+          branch_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 1)
+          function_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 2 | head -n 1)
+          line_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 3 | head -n 1)
+          # echo "Statement Coverage:$statement_coverage"
+          # echo "Branch Coverage:$branch_coverage"
+          # echo "Function Coverage:$function_coverage"
+          # echo "Line Coverage:$line_coverage"
+
+          if [ "$(echo "$statement_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+            echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !! ..."
+       
+            exit 1  # This will mark the workflow as failed
+          else
+          
+            echo "Statement Code coverage is acceptable: $statement_coverage%"
+          fi
+
+          if [ "$(echo "$branch_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+            echo "Branch Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !!..."
+         
+            exit 1  # This will mark the workflow as failed
+          else
+        
+            echo "Branch Code coverage is acceptable: $branch_coverage%"
+          fi
+
+          if [ "$(echo "$function_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+            echo "Function Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
+
+             exit 1  # This will mark the workflow as failed
+          else
+
+            echo "Function Code coverage is acceptable: $function_coverage%"
+          fi
+
+          if [ "$(echo "$line_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+            echo "Line Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
+
+             exit 1  # This will mark the workflow as failed
+          else
+
+            echo "Line Code coverage is acceptable: $line_coverage%"
+          fi
+        
+  
