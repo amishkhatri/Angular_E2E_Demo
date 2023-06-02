@@ -25,10 +25,6 @@ jobs:
     - name: Use variable
       run:  echo "LOCAL_CODE_COVERAGE_OPTIN_FLAG:$LOCAL_CODE_COVERAGE_OPTIN_FLAG"
       
-    - name: Conditional step
-      run: echo "Executing this step because LOCAL_CODE_COVERAGE_OPTIN_FLAG is FALSE"
-      if: ${{ env.LOCAL_CODE_COVERAGE_OPTIN_FLAG == 'TRUE' }}
-        
     - name: Use Node.js 18.16.0
       uses: actions/setup-node@v2
       with:
