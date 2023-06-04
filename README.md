@@ -1,4 +1,4 @@
-# Angular Unit test with Jasmine and Karma 
+# Angular 15.X Unit test with Jasmine and Karma 
 
 A short sample about how to make e2e unit tests for an Angular 15X application.
 
