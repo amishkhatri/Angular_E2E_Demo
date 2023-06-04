@@ -49,10 +49,13 @@ jobs:
       run: |
         npm run build --prod
         xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
-    
-        - name: Docker Build and Push
-          uses: docker/build-push-action@v2
-            with:
-            context: .
-            push: true
-            tags: v1.0, latest
+  
+    - name: Build and push Docker images
+    # You may pin to the exact commit or the version.
+    # uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+      uses: docker/build-push-action@v4.0.0
+      with:
+          context: .
+          push: true
+          tags: v1.0, latest
+          
