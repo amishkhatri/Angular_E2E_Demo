@@ -1,4 +1,4 @@
-name: CI
+name: CI-Docker
 
 on:
   push:
@@ -57,6 +57,5 @@ jobs:
       with:
           context: .
           push: true
-          tags: v1.0, latest
-          # username: ${{ secrets.DOCKER_USERNAME }}
+          tags: angular-inmemory-api .
           password: ${{ secrets.DOCKER_TOKEN }}
