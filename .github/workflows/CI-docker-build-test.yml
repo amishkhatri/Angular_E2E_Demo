@@ -57,5 +57,5 @@ jobs:
       with:
           context: .
           push: true
-          tags: angular-inmemory-api .
+          tags: angular-inmemory-api
           password: ${{ secrets.DOCKER_TOKEN }}
