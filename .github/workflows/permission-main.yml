@@ -9,3 +9,4 @@ permissions:
   checks: read
   contents: write
   deployments: write
+
