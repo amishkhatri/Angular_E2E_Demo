@@ -1,0 +1,33 @@
+name: Update Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  checks: read
+  contents: write
+  deployments: write
+
+jobs:
+  update-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update workflow file
+        run: |
+          # Replace 'path/to/workflow.yml' with the actual path to your workflow file
+          sed -i 's/old-value/new-value/' path/to/workflow.yml
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add .
+          git commit -m "Update workflow file [skip ci]"
+          git push
