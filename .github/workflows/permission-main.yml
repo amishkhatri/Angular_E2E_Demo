@@ -21,7 +21,7 @@ jobs:
       - name: Update workflow file
         run: |
           # Replace 'path/to/workflow.yml' with the actual path to your workflow file
-          sed -i 's/old-value/new-value/' path/to/workflow.yml
+          # sed -i 's/old-value/new-value/' path/to/workflow.yml
 
       - name: Commit and push changes
         run: |
