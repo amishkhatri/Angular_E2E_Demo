@@ -25,14 +25,18 @@ fdescribe('PolicyListComponent', () => {
   
 it ('should call getPolicies GET Method ', () => {
 
+  //Arrange 
   // Create a spy object for mockPolicyService
   const mockPolicyService1 = jasmine.createSpyObj('mockPolicyService', ['getPolicies']);
   
   // Configure the mock method
   mockPolicyService1.getPolicies.and.returnValue(of(POLICIES));
   component = new PolicyListComponent(mockPolicyService1);
+  
+  //Act
   component.policies = POLICIES;
 
+  //Assert
   expect(component.policies.length).toBe(4);
 
 })
