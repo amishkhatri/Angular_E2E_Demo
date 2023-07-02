@@ -47,7 +47,7 @@ jobs:
         # timeout-minutes: 4
     
     - name: SonarCloud Scan PR fix
-      uses: kundkingan/sonarcloud-github-action@1.5
+      uses: SonarSource/sonarcloud-github-action@v1.9.1
       env:          
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
