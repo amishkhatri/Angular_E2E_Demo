@@ -10,14 +10,6 @@ env:
      CODE_COVERAGE_THRESHOLD: 20
      LOCAL_CODE_COVERAGE_OPTIN_FLAG: ${{ vars.CODE_COVERAGE_OPTIN_FLAG }}
 
-permissions:
-pull-requests: none
-push: none
-checks: none
-actions: none
-statuses: none
-  users:
-    - amishkhatri
     
 jobs:
   build:
