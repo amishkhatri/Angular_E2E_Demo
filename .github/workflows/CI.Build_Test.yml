@@ -48,8 +48,7 @@ jobs:
     
     - name: SonarCloud Scan PR fix
       uses: kundkingan/sonarcloud-github-action@1.5
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:          
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
