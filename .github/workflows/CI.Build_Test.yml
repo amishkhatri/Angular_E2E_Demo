@@ -53,6 +53,16 @@ jobs:
         sudo apt-get install -y xvfb
         Xvfb -screen 0 1024x768x24 :99 &
 
+
+  - name: Official SonarQube Scan
+    uses: SonarSource/sonarcloud-github-action@v1.9.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+        SONAR_ANALYSIS_MODE: "preview"
+
     - name: Run tests
       run: |
         npm run build --prod
