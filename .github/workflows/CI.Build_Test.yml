@@ -8,9 +8,7 @@ on:
 
 env:
      CODE_COVERAGE_THRESHOLD: 20
-     LOCAL_CODE_COVERAGE_OPTIN_FLAG: ${{ vars.CODE_COVERAGE_OPTIN_FLAG }}
 
-    
 jobs:
   build:
 
@@ -22,10 +20,7 @@ jobs:
         
     steps:
     - uses: actions/checkout@v1
-      
-    - name: Use variable
-      run:  echo "LOCAL_CODE_COVERAGE_OPTIN_FLAG:$LOCAL_CODE_COVERAGE_OPTIN_FLAG"
-      
+
     - name: Use Node.js 18.16.0
       uses: actions/setup-node@v2
       with:
@@ -45,16 +40,6 @@ jobs:
         sudo apt-get install -y xvfb
         Xvfb -screen 0 1024x768x24 :99 &
 
-
-  - name: Official SonarQube Scan
-    uses: SonarSource/sonarcloud-github-action@v1.9.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-        SONAR_ANALYSIS_MODE: "preview"
-
     - name: Run tests
       run: |
         npm run build --prod
@@ -62,9 +47,19 @@ jobs:
         xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
         # timeout-minutes: 4
         
-    - name: Conditional - code coverage check
-      id: code_coverage
+    - name: Check code coverage
       run: |
+        COVERAGE_THRESHOLD=25
+        # coverage=$(sed -n 's/.* Statements \([0-9.]*\)%.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        # echo "Actual coverage is: $coverage%"
+        
+        #coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)%  Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        # coverage1=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        # coverage2=$(sed -nE 's/.*([0-9]+[.][0-9]+)% Statements.*/\1/p' ./coverage/angular-inmemory-api/index.html)
+        # coverage3=$(sed 'p' ./coverage/angular-inmemory-api/index.html)
+       
+        # echo "Actual coverage1 is: $coverage1%"
+        # echo "Actual coverage3 is: $coverage3%"
           coverage_file="./coverage/angular-inmemory-api/index.html"
           statement_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% )" "$coverage_file")
           branch_coverage=$(grep -oP "(?<=<span class=\"strong\">)\d+\.\d+(?=% </span>)" "$coverage_file" | tail -n 1)
@@ -75,39 +70,31 @@ jobs:
           # echo "Function Coverage:$function_coverage"
           # echo "Line Coverage:$line_coverage"
 
-          if [ "$(echo "$statement_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-            echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !! ..."
-       
-            exit 1  # This will mark the workflow as failed
-          else
-          
-            echo "Statement Code coverage is acceptable: $statement_coverage%"
-          fi
+        if [ "$(echo "$statement_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+          echo "Statement Code coverage is less than $COVERAGE_THRESHOLD%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo " Statement Code coverage is acceptable: $statement_coverage%"
+        fi
 
-          if [ "$(echo "$branch_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-            echo "Branch Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. JOB ABORTED !!..."
-         
-            exit 1  # This will mark the workflow as failed
-          else
-            echo "Branch Code coverage is acceptable: $branch_coverage%"
-          fi
+        if [ "$(echo "$branch_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+          echo "Branch Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo " Branch Code coverage is acceptable: $branch_coverage%"
+        fi
 
-          if [ "$(echo "$function_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-            echo "Function Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
+        if [ "$(echo "$function_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+          echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo "Function Code coverage is acceptable: $function_coverage%"
+        fi
 
-             exit 1  # This will mark the workflow as failed
-          else
-
-            echo "Function Code coverage is acceptable: $function_coverage%"
-          fi
-
-          if [ "$(echo "$line_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
-            echo "Line Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%.  JOB ABORTED !!..."
-
-             exit 1  # This will mark the workflow as failed
-          else
-
-            echo "Line Code coverage is acceptable: $line_coverage%"
-          fi
-      if: ${{ env.LOCAL_CODE_COVERAGE_OPTIN_FLAG == 'TRUE' }}
-      
+        if [ "$(echo "$line_coverage < ${{ env.CODE_COVERAGE_THRESHOLD }}" | bc)" -eq 1 ]; then
+          echo "Statement Code coverage is less than ${{ env.CODE_COVERAGE_THRESHOLD }}%. Sending message..."
+          exit 1  # This will mark the workflow as failed
+        else
+          echo "Line Code coverage is acceptable: $line_coverage%"
+        fi
+        
