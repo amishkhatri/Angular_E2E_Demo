@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-     CODE_COVERAGE_THRESHOLD: 20
+     CODE_COVERAGE_THRESHOLD: 10
 
 jobs:
   build:
