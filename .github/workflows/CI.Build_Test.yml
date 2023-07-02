@@ -62,12 +62,7 @@ jobs:
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
           SONAR_ANALYSIS_MODE: "preview"
-        with:
-          # Additional arguments to the sonarcloud scanner
-          args: # optional
-          # Set the sonar.projectBaseDir analysis property
-          projectBaseDir: # optional, default is .
-
+        
 
     - name: Run tests
       run: |
