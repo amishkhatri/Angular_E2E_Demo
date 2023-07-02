@@ -46,15 +46,6 @@ jobs:
         xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
         # timeout-minutes: 4
     
-    - name: SonarCloud Scan PR fix
-      uses: SonarSource/sonarcloud-github-action@v1.9.1
-      env:          
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-          SONAR_ANALYSIS_MODE: "preview"
-
-     # with: projectBaseDir: # optional, default is .
        
     - name: Check code coverage
       run: |
