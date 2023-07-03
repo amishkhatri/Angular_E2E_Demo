@@ -40,32 +40,24 @@ export class PolicyListComponent
       console.log(policy.id);
     }
       
-    // navigateToPolicyDetail( policy : policydataitem ) :void
-    // {
-
-    //   const policyIdString = policy?.id.toString();
-
-    //   this.router.navigate(['/policy-detail', policyIdString]);
-
-    // }
     
     deleteButton(policy : policydataitem): void 
     {      
       const policyFiltered = this.policyArray?.filter(p => p !== policy);
       
       if (!policyFiltered)
-      {    
+      {   
         
         this.policyService.deletePolicy1(policy).subscribe();
         console.log('inside - False ');
       }
-
-      if (policyFiltered)
-      {
       
-        this.policyService.deletePolicy1(policy).subscribe();
-        console.log('inside  - True ');
-      }
+      // if (policyFiltered)
+      // {
+      
+      //   this.policyService.deletePolicy1(policy).subscribe();
+      //   console.log('inside  - True ');
+      // }
 
       this.policyArray = policyFiltered;
 
