@@ -3,7 +3,9 @@ name: CI
 on:
   push:
     branches: [ "main" ]
- 
+
+  pull_request:
+      types: [opened, synchronize, reopened]
 
 env:
      CODE_COVERAGE_THRESHOLD: 10
@@ -44,7 +46,17 @@ jobs:
         # xvfb-run -a ng test --configuration=development
         xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
         # timeout-minutes: 4
-    
+
+    - name: Sonar Scan
+      run: npm run sonar
+           
+    - name: sonarqube quality gate check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      timeout-minutes: 5
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
        
     - name: Check code coverage
       run: |
