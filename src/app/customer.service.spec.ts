@@ -9,14 +9,7 @@ describe('CustomerService', () => {
   let service: CustomerService;
   let httpClientSpy: jasmine.SpyObj<HttpClient>;
 
-
   beforeEach(() => {
-    // TestBed.configureTestingModule({
-    //   imports: [HttpClientTestingModule],
-    //   providers: [CustomerService]
-
-    // });
-    // service = TestBed.inject(CustomerService);
 
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
     service = new CustomerService(httpClientSpy);
@@ -27,10 +20,9 @@ describe('CustomerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should test getCustomer() Method', () => {
+  it('should test getCustomer() Method', ( done: DoneFn ) => {
 
     //Arrange
-   
     let  fakeCustomers:  customerdataitem[] =  [
       {  userId:  111,  clientId:  234, name: 'abc', type: 'Classic', city: 'Mumbai'},
       {  userId:  112,  clientId:  322, name: 'xyz', type: 'Executive', city: 'Mumbai'},
@@ -45,7 +37,8 @@ describe('CustomerService', () => {
           .withContext('expected customer')
           .toEqual(fakeCustomers);
         done();
-      }
+      },
+      error: done.fail
     });
 
     expect(httpClientSpy.get.calls.count())
@@ -55,9 +48,3 @@ describe('CustomerService', () => {
   });
   
 });
-
-
-function done() {
-  throw new Error('Function not implemented.');
-}
-
