@@ -82,7 +82,6 @@ it ('should call delete button', () => {
     description: "Home Loan - Secure"
   };
 
-
   // Create a spy object for mockPolicyService
   const mockPolicyService1 = jasmine.createSpyObj('mockPolicyService', ['deletePolicy1']);
   
@@ -93,7 +92,6 @@ it ('should call delete button', () => {
 
   component.deleteButton(data);
   expect(mockPolicyService1.deletePolicy1).toHaveBeenCalledWith(POLICIES[2]);
-
 
 })
 
