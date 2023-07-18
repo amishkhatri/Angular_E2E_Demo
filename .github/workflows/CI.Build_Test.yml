@@ -45,6 +45,12 @@ jobs:
         xvfb-run -a ng test --configuration=development --browsers=ChromeHeadless --code-coverage --watch=false --progress=true
         # timeout-minutes: 4
     
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    
        
     - name: Check code coverage
       run: |
