@@ -3,8 +3,6 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { customerdataitem } from './model/customerdataitem';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -17,6 +15,5 @@ export class CustomerService {
   {
     return this.httpClient.get<customerdataitem[]>('/customers');
   }
-
 
 }
