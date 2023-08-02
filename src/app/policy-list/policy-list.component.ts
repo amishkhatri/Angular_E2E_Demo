@@ -36,14 +36,22 @@ export class PolicyListComponent {
     console.log(policy.id);
   }
 
-  // navigateToPolicyDetail( policy : policydataitem ) :void
-  // {
+  deleteButton1(policy: policydataitem): void {
 
-  //   const policyIdString = policy?.id.toString();
+    // filter policy list
+    const policyFiltered = this.filterPoliyList(policy);
 
-  //   this.router.navigate(['/policy-detail', policyIdString]);
+    // when filtered
+    try {
+          if (!policyFiltered) this.policyService.deletePolicy1(policy).subscribe();
+    } catch (error) {
+      throw new Error("error while deletion")
+    }
+    
+    //Data bind
+    this.DataBind(policyFiltered);
 
-  // }
+  }
 
   deleteButton(policy: policydataitem): void {
 
