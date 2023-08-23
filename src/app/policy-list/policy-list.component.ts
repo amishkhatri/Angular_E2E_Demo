@@ -36,6 +36,15 @@ export class PolicyListComponent {
     console.log(policy.id);
   }
 
+  
+  viewButton1(policy: policydataitem): void {
+    console.log(policy.id);
+  }
+  
+  viewButton2(policy: policydataitem): void {
+    console.log(policy.id);
+  }
+
   deleteButton1(policy: policydataitem): void {
 
     // filter policy list
