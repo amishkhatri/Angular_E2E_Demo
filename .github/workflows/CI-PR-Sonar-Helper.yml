@@ -8,6 +8,10 @@ on:
       
   pull_request:
       types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: read # allows to decorate PRs with analysis results
+      
 name: Main Workflow
 jobs:
   sonarcloud:
