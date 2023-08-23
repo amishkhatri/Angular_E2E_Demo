@@ -14,6 +14,14 @@ permissions:
       
 name: Main Workflow
 jobs:
+  - name: NPM Install and test
+        run:|
+          node -v 
+          npm install --legacy-peer-deps
+
+  - name: Install dependencies
+          run:npm ci
+      
   sonarcloud:
     runs-on: ubuntu-latest
     steps:
