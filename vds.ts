@@ -1,3 +1,4 @@
+//NEW RGKREFACTOR
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { StoreReducers } from '../../common/services/store.reducer';
@@ -9,194 +10,173 @@ import { StateStoreService } from 'src/app/common/services/page-state-store.serv
 @Injectable({ providedIn: 'root' })
 export class VirtualDataSourceService {
 
-  constructor(private stateStoreService: StateStoreService, 
-    private storeReducers: StoreReducers, 
-    private dataSourceService: DataSourceService, 
-    private sharedService: SharedService) { }
+  constructor(
+    private stateStoreService: StateStoreService,
+    private storeReducers: StoreReducers,
+    private dataSourceService: DataSourceService,
+    private sharedService: SharedService
+  ) {}
 
-
-  
-  /* Method to perform virtual data source call */
   async physicalAssetFailureModeOptimizationVds
-  (physicalAssetId, failureModeId, runInBackground) {
+  (physicalAssetId, failureModeId, runInBackground)
+   {
     
-    let finalOutput: any = null;
-    let errorMessage: string = '';
-    let hasError: boolean = false;
-    let ids_physicalassetfailuremodeoptimization: any;
+    const response = await 
+    this.dataSourceService.physicalAssetFailureModeOptimization
+    (physicalAssetId, failureModeId, runInBackground);
+  
     
-    await this.dataSourceService
-      .physicalAssetFailureModeOptimization(physicalAssetId, failureModeId, runInBackground)
-      .then((res: any) => {
-        hasError = !hasError ? res.hasError : hasError;
-        if (!hasError) {
-          ids_physicalassetfailuremodeoptimization = res.response;
-          finalOutput = ids_physicalassetfailuremodeoptimization;
+    if (response.hasError) {
+      return this.handleError
+      ('physicalAssetFailureModeOptimization', 
+      response.errorMessage?.message);
+    }
 
-          const physicalAssetFailureModeTasks = _.cloneDeep(res.response);
-          this.stateStoreService.modifyAppState('physicalAssetFailureModeTasks', physicalAssetFailureModeTasks);       
-        }  else {
-          errorMessage += `physicalAssetFailureModeOptimization: ` + res.errorMessage?.message + `\n`;
-        }
-      });
-
-    /*  physicalAssetFailureModeOptimizationVds */
-    const trf_var = 
-    this.physicalAssetFailureModeOptimizationVdstrf_var(
-      ids_physicalassetfailuremodeoptimization);
-    finalOutput = trf_var;
-
+    const transformedData = 
+    this.transformPhysicalAssetFailureModeTasks(response.response);
+    this.stateStoreService.modifyAppState('physicalAssetFailureModeTasks', transformedData);
+    
     this.storeReducers.globalReducer(
-      {
-        type: ADD,
-        payload: finalOutput,
-      },
+      { type: ADD, payload: transformedData },
       'physicalAssetFailureModeOptimizationVds'
     );
 
     return {
       dataSetName: 'physicalAssetFailureModeOptimizationVds',
-      response: finalOutput,
-      errorMessage,
-      hasError,
+      response: transformedData,
+      errorMessage: '',
+      hasError: false,
     };
   }
 
-  physicalAssetFailureModeOptimizationVdstrf_var(ids_physicalassetfailuremodeoptimization) {
-    let failuremodeData = null;
-    if (ids_physicalassetfailuremodeoptimization && ids_physicalassetfailuremodeoptimization.Tasks) {
-      failuremodeData = {
-        current: [],
-        optimized: [],
-        custom: [],
-        hasActiveApproval: ids_physicalassetfailuremodeoptimization.HasActiveApproval,
-        hasMadatoryTask: false
-      };
-      ids_physicalassetfailuremodeoptimization.Tasks.forEach((failureObj) => {
-        
-        const intervalFn = this.sharedService.getTimePeriod;
-        const intervalObj = intervalFn(failureObj['Interval']);
-
-        if (!failuremodeData.hasMadatoryTask && failureObj.IsMandatory) {
-          failuremodeData.hasMadatoryTask = true;
-        }
-
-        failureObj['DisplayInterval'] = intervalObj.display || failureObj['Interval'];
-        failureObj['intervalObj'] = intervalObj;
-        failureObj['DisplayMandatory'] = failureObj.IsMandatory ? 'Yes' : "No";
-
-        const currency = this.sharedService.getCurrencyFormatAssetApp(failureObj['AnnualTotalCost']);
-        const unit = !_.isEmpty(currency.unit) ? ` ${currency.unit}` : '';
-        
-        failureObj['AnnualDownTime'] = _.round(failureObj['AnnualDownTime'], 2);
-        failureObj['AnnualLaborHours'] = _.round(failureObj['AnnualLaborHours'], 2);
-        failureObj['AnnualTotalCostDisplayValue'] = `${_.round(currency.value, 2)}${unit}`;
-        failureObj['CostBenefitPercentage'] = _.round(100 - failureObj['CostBenefitPercentage'], 2);
-
-        const optimizedIntervalObj = intervalFn(failureObj['OptimizedInterval']);
-        failureObj['optimizedDisplayInterval'] = optimizedIntervalObj.display || failureObj['OptimizedInterval'];
-        failureObj['optimizedIntervalObj'] = optimizedIntervalObj;
-
-        const optimisedCurrency = this.sharedService.getCurrencyFormatAssetApp(failureObj['OptimizedAnnualTotalCost']);
-        const optimisedUnit = !_.isEmpty(optimisedCurrency.unit) ? ` ${optimisedCurrency.unit}` : '';
-        failureObj['OptimizedAnnualDownTime'] = _.round(failureObj['OptimizedAnnualDownTime'], 2);
-        failureObj['OptimizedAnnualLaborHours'] = _.round(failureObj['OptimizedAnnualLaborHours'], 2);
-        failureObj['optimizedAnnualTotalCostDisplayValue'] = `${_.round(optimisedCurrency.value, 2)}${optimisedUnit}`;
-        failureObj['OptimizedCostBenefitPercentage'] = _.round(100 - failureObj['OptimizedCostBenefitPercentage'], 2);
-
-        if (failureObj['TaskType']?.toLowerCase() === 'corrective') {
-          failureObj['DisplayInterval'] = 'RTF';
-          failureObj['CostBenefitPercentage'] = 0;
-          failureObj['Interval'] = null;
-          failureObj['optimizedDisplayInterval'] = 'RTF';
-          failureObj['OptimizedCostBenefitPercentage'] = 0;
-          failureObj['OptimizedInterval'] = null;
-          failureObj['DisplayMandatory'] = 'N/A'
-        } else if (failureObj['TaskType']?.toLowerCase() === 'condition monitoring') {
-          failureObj['DisplayInterval'] = 'N/A';
-          failureObj['Interval'] = null;
-          failureObj['optimizedDisplayInterval'] = 'N/A';
-          failureObj['OptimizedInterval'] = null;
-        }
-        failureObj['displayTaskName'] = failureObj.TaskType;
-        if (failureObj['IsCurrent']) {
-          failuremodeData.current.push(failureObj);
-        }
-        if (failureObj['IsOptimized']) {
-          failuremodeData.optimized.push(failureObj);
-        }
-        failuremodeData.custom.push({ ...failureObj });
-      });
-    }
-    return failuremodeData;
+  private handleError(context: string, errorMessage: string): any {
+    return {
+      dataSetName: context,
+      response: null,
+      errorMessage,
+      hasError: true,
+    };
   }
-  /* Method to perform virtual data source call */
-  async chartDataForTaskVds(physicalAssetId, failureModeId, scheduledTaskId, runInBackground) {
-    let finalOutput: any = null;
-    let ids_chartdatafortask: any;
-    let errorMessage: string = '';
-    let hasError: boolean = false;
-    await this.dataSourceService
-      .chartDataForTask(physicalAssetId, failureModeId, scheduledTaskId, runInBackground)
-      .then((res: any) => {
-        hasError = !hasError ? res.hasError : hasError;
-        if (!hasError) {
-          ids_chartdatafortask = res.response;
-          finalOutput = ids_chartdatafortask;
-        } else {
-          errorMessage += `chartDataForTask: ` + res.errorMessage?.message + `\n`;
-        }
-      });
-    /*  chartDataForTaskVds */
-    const trf_var = this.chartDataForTaskVdstrf_var(ids_chartdatafortask);
-    finalOutput = trf_var;
 
+  
+  async chartDataForTaskVds(physicalAssetId, failureModeId, scheduledTaskId, runInBackground) {
+  
+    const response = await this.dataSourceService.chartDataForTask
+    (physicalAssetId, failureModeId, scheduledTaskId, runInBackground);
+    
+    if (response.hasError) {
+      return this.handleError('chartDataForTask', response.errorMessage?.message);
+    }
+
+    const transformedData = 
+    this.transformChartDataForTask(response.response);
+    
     this.storeReducers.globalReducer(
-      {
-        type: ADD,
-        payload: finalOutput,
-      },
+      { type: ADD, payload: transformedData },
       'chartDataForTaskVds'
     );
 
     return {
       dataSetName: 'chartDataForTaskVds',
-      response: finalOutput,
-      errorMessage,
-      hasError,
+      response: transformedData,
+      errorMessage: '',
+      hasError: false,
     };
   }
 
-  chartDataForTaskVdstrf_var(ids_chartdatafortask) {
-    if (ids_chartdatafortask && ids_chartdatafortask.Intervals && ids_chartdatafortask.Intervals.length) {
-      ids_chartdatafortask.Intervals.forEach((t) => {
-        let currency = null,
-          unit = '';
-        t['ProactiveCost'] =
-          (t['InspectionCost'].TotalMaintenanceCost || 0) + (t['PlannedCost'].TotalMaintenanceCost || 0);
-        t['ReactiveCost'] =
-          (t['CorrectiveCost'].TotalMaintenanceCost || 0) + (t['SecondaryActionCost'].TotalMaintenanceCost || 0);
-        currency = this.sharedService.getCurrencyFormatAssetApp(t['TotalCost']);
-        unit = !_.isEmpty(currency.unit) ? ` ${currency.unit}` : '';
-        t['TotalCostDisplayValue'] = `${_.round(currency.value, 2)}${unit}`;
 
-        currency = this.sharedService.getCurrencyFormatAssetApp(t['TotalEffectCost']);
-        unit = !_.isEmpty(currency.unit) ? ` ${currency.unit}` : '';
-        t['TotalEffectCostDisplayValue'] = `${_.round(currency.value, 2)}${unit}`;
+  private transformPhysicalAssetFailureModeTasks
+  (data: any): any
+   {
 
-        currency = this.sharedService.getCurrencyFormatAssetApp(t['TotalMaintenanceCost']);
-        unit = !_.isEmpty(currency.unit) ? ` ${currency.unit}` : '';
-        t['TotalMaintenanceCostDisplayValue'] = `${_.round(currency.value, 2)}${unit}`;
+    const transformedTasks = 
+    data.Tasks.map((failureObj: any) => 
+    {
+    
+        const intervalObj = this.sharedService.getTimePeriod(failureObj.Interval);
+        const optimizedIntervalObj = this.sharedService.getTimePeriod(failureObj.OptimizedInterval);
 
-        currency = this.sharedService.getCurrencyFormatAssetApp(t['ProactiveCost']);
-        unit = !_.isEmpty(currency.unit) ? ` ${currency.unit}` : '';
-        t['ProactiveCostDisplayValue'] = `${_.round(currency.value, 2)}${unit}`;
+        const transformedFailureObj = {
+            
+            DisplayInterval: intervalObj.display || failureObj.Interval,
+            intervalObj,
+            DisplayMandatory: failureObj.IsMandatory ? 'Yes' : 'No',
+            
+        };
 
-        currency = this.sharedService.getCurrencyFormatAssetApp(t['ReactiveCost']);
-        unit = !_.isEmpty(currency.unit) ? ` ${currency.unit}` : '';
-        t['ReactiveCostDisplayValue'] = `${_.round(currency.value, 2)}${unit}`;
-      });
-    }
-    return ids_chartdatafortask || null;
+        if (failureObj.TaskType?.toLowerCase() === 'corrective') {
+            transformedFailureObj.DisplayInterval = 'RTF';
+            
+        } else if (failureObj.TaskType?.toLowerCase() === 'condition monitoring') {
+            transformedFailureObj.DisplayInterval = 'N/A';
+            
+        }
+
+      return transformedFailureObj;
+
+    });
+
+    const failuremodeData = {
+
+      current: transformedTasks.filter((failureObj: any) => failureObj.IsCurrent),
+      optimized: transformedTasks.filter((failureObj: any) => failureObj.IsOptimized),
+      custom: transformedTasks.map((failureObj: any) => ({ ...failureObj })),
+      // ... other properties
+    };
+
+    return failuremodeData;
   }
+
+  
+  private transformChartDataForTask(data: any): any {
+    const transformedIntervals = data.Intervals.map((interval: any) => {
+      const proactiveCost = (interval.InspectionCost.TotalMaintenanceCost || 0) + (interval.PlannedCost.TotalMaintenanceCost || 0);
+      const reactiveCost = (interval.CorrectiveCost.TotalMaintenanceCost || 0) + (interval.SecondaryActionCost.TotalMaintenanceCost || 0);
+
+      const transformedInterval = {
+        IntervalId: interval.IntervalId,
+        IntervalName: interval.IntervalName,
+        // ... other properties
+        ProactiveCost: proactiveCost,
+        ReactiveCost: reactiveCost,
+      };
+
+      const currency = this.sharedService.getCurrencyFormatAssetApp(interval.TotalCost);
+      const unit = !_.isEmpty(currency.unit) ? ` ${currency.unit}` : '';
+      transformedInterval.TotalCostDisplayValue = `${_.round(currency.value, 2)}${unit}`;
+
+      const effectCurrency = this.sharedService.getCurrencyFormatAssetApp(interval.TotalEffectCost);
+      const effectUnit = !_.isEmpty(effectCurrency.unit) ? ` ${effectCurrency.unit}` : '';
+      transformedInterval.TotalEffectCostDisplayValue = `${_.round(effectCurrency.value, 2)}${effectUnit}`;
+
+      const maintenanceCurrency = this.sharedService.getCurrencyFormatAssetApp(interval.TotalMaintenanceCost);
+      const maintenanceUnit = !_.isEmpty(maintenanceCurrency.unit) ? ` ${maintenanceCurrency.unit}` : '';
+      transformedInterval.TotalMaintenanceCostDisplayValue = `${_.round(maintenanceCurrency.value, 2)}${maintenanceUnit}`;
+
+      const proactiveCurrency = this.sharedService.getCurrencyFormatAssetApp(proactiveCost);
+      const proactiveUnit = !_.isEmpty(proactiveCurrency.unit) ? ` ${proactiveCurrency.unit}` : '';
+      transformedInterval.ProactiveCostDisplayValue = `${_.round(proactiveCurrency.value, 2)}${proactiveUnit}`;
+
+      const reactiveCurrency = this.sharedService.getCurrencyFormatAssetApp(reactiveCost);
+      const reactiveUnit = !_.isEmpty(reactiveCurrency.unit) ? ` ${reactiveCurrency.unit}` : '';
+      transformedInterval.ReactiveCostDisplayValue = `${_.round(reactiveCurrency.value, 2)}${reactiveUnit}`;
+
+      return transformedInterval;
+    });
+
+    const transformedData = {
+      ...data,
+      Intervals: transformedIntervals,
+    };
+
+    return transformedData;
+  }
+  
+
 }
+
+
+
+
+
+  
