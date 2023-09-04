@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.4",
-    "@angular/cli": "~15.2.4",
+    "@angular/cli": "~16.2.1",
     "@angular/compiler-cli": "^15.2.0",
     "@stryker-mutator/core": "^7.1.0",
     "@stryker-mutator/karma-runner": "^7.1.0",
