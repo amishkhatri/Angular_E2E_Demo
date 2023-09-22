@@ -9,6 +9,7 @@ import { catchError } from 'rxjs';
   styleUrls: ['./policy-list.component.css']
 })
 
+  
 export class PolicyListComponent {
   policyArray!: policydataitem[];
 
@@ -37,6 +38,23 @@ export class PolicyListComponent {
   }
 
   deleteButton1(policy: policydataitem): void {
+
+    // filter policy list
+    const policyFiltered = this.filterPoliyList(policy);
+
+    // when filtered
+    try {
+          if (!policyFiltered) this.policyService.deletePolicy1(policy).subscribe();
+    } catch (error) {
+      throw new Error("error while deletion")
+    }
+    
+    //Data bind
+    this.DataBind(policyFiltered);
+
+  }
+
+    deleteButton2(policy: policydataitem): void {
 
     // filter policy list
     const policyFiltered = this.filterPoliyList(policy);
