@@ -28,7 +28,7 @@
     "@angular/cli": "~15.2.4",
     "@angular/compiler-cli": "^15.2.0",
     "@stryker-mutator/core": "^7.1.0",
-    "@stryker-mutator/karma-runner": "^7.1.0",
+    "@stryker-mutator/karma-runner": "^7.3.0",
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
